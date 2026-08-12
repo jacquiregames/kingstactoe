@@ -1,0 +1,297 @@
+/* ==========================================================================
+   layout/board.css
+   The main game board grid, tiles, and special-tile border overlays.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: var(--space-lg);
+}
+
+.main-game-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 15px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.board-and-scores-container {
+  position: relative;
+  display: grid;
+  /* Change the 60px at the end to 100px (or whatever width looks best to you) */
+  grid-template-columns: repeat(var(--board-cols), var(--board-cell-size)) 120px;
+  
+  /* You can also change the 60px here if you want the bottom row (col scores) to be taller */
+  grid-template-rows: repeat(var(--board-rows), var(--board-cell-size)) 60px;
+  
+  padding: var(--space-md);
+  border-radius: var(--radius-lg);
+  border: 3px solid var(--border-subtle);
+  box-shadow: var(--shadow-panel-glow);
+  background-color: var(--bg-panel);
+  gap: var(--board-gap);
+  flex-direction: column;
+}
+
+.board-and-scores-container.shake {
+  animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.border-overlay {
+  grid-column: span var(--board-cols);
+  grid-row: span var(--board-rows);
+  pointer-events: none;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(var(--board-cols), var(--board-cell-size));
+  grid-template-rows: repeat(var(--board-rows), var(--board-cell-size));
+  position: relative;
+  grid-column: 1 / 7;
+  grid-row: 1 / 6;
+  gap: var(--board-gap);
+  background-color: var(--bg-panel);
+}
+
+.board-cell {
+  background-color: var(--bg-app);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: background-color 0.2s;
+  overflow: hidden;
+  z-index: 4;
+}
+
+.board-cell img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.board-cell:hover {
+  background-color: var(--bg-panel-hover);
+}
+
+.board-cell.hovered {
+  transform: scale(1.03);
+  z-index: 4;
+  outline: 2px dashed rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.board-cell.highlighted {
+  background-color: rgba(255, 215, 0, 0.3);
+  box-shadow: inset 0 0 0 2px rgba(255, 215, 0, 0.7);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+
+.board-cell.highlighted::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(255, 255, 0, 0.8);
+  border-radius: var(--radius-sm);
+  animation: highlightPulse 1.2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+.board-cell.last-placed {
+  position: relative;
+  box-shadow: 0 0 10px 4px rgba(0, 200, 255, 0.8);
+  background-color: rgba(0, 200, 255, 0.15);
+  animation: lastPlacedFlash 0.6s ease-out;
+}
+
+.board-cell.transparent-bg {
+  background-color: transparent;
+}
+
+.disabled-board {
+  pointer-events: none;
+}
+
+.ghost-tile-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.ghost-tile {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  opacity: 0.5;
+}
+
+.last-move {
+  animation: pulseGlow 2s infinite;
+  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: 4;
+}
+
+.tile-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 4;
+}
+
+.tile-container img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.tile {
+  user-select: none;
+}
+
+.tile-image {
+  height: var(--board-cell-size);
+  width: var(--board-cell-size);
+  object-fit: contain;
+  vertical-align: middle;
+  z-index: 5;
+  position: relative;
+}
+
+.tile-image[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 105%;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: 0.8em;
+  font-weight: bold;
+  white-space: nowrap;
+  box-shadow: var(--shadow-card);
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 1;
+  visibility: visible;
+}
+
+.selected {
+  border-radius: var(--radius-lg);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  transform: scale(1.1) translateY(-5px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* --- Tile / piece placement animation triggers --- */
+.tile-draw {
+  animation: draw 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.placed-anim {
+  animation: placeAnim 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.tile-placed {
+  animation: placeTile 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.castle-placed {
+  animation: placeCastle 0.6s ease-out;
+}
+
+.glowing-stone {
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+  animation: glow 1.5s infinite alternate;
+}
+
+.pulse-border {
+  animation: borderPulse 2s infinite;
+}
+
+/* ==========================================================================
+   Special tile borders (goldmine / dragon / wizard overlays)
+   ========================================================================== */
+
+.special-tile-borders {
+  position: absolute;
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(var(--board-cols), var(--board-cell-size));
+  grid-template-rows: repeat(var(--board-rows), var(--board-cell-size));
+  gap: var(--board-gap); /* Must match the game board's gap */
+  pointer-events: none;
+  z-index: 1;
+}
+
+.special-border-container {
+  inset: 0;
+}
+
+.board-cell.affected-by-border {
+  background-color: transparent; /* hide just the background */
+}
+
+/* Each border is a grid item, positioned by grid lines */
+.animated-border-wrapper {
+  z-index: 1;
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+/* Layering is controlled by z-index */
+.goldmine-border-h,
+.goldmine-border-v {
+  z-index: 1;
+}
+.dragon-border-h,
+.dragon-border-v {
+  z-index: 2;
+}
+.wizard-border-h,
+.wizard-border-v {
+  z-index: 3;
+}
+
+/* Image sources */
+.goldmine-border-h { background-image: url('/images/borders/goldmine_border_h.gif'); }
+.goldmine-border-v { background-image: url('/images/borders/goldmine_border_v.gif'); }
+.dragon-border-h { background-image: url('/images/borders/dragon_border_h.gif'); }
+.dragon-border-v { background-image: url('/images/borders/dragon_border_v.gif'); }
+.wizard-border-h { background-image: url('/images/borders/wizard_border_h.gif'); }
+.wizard-border-v { background-image: url('/images/borders/wizard_border_v.gif'); }
+
+.board-flash {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: flash 0.5s ease-in-out;
+  z-index: var(--z-board);
+}

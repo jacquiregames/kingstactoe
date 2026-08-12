@@ -1,0 +1,237 @@
+/* ==========================================================================
+   components/buttons.css
+   All button variants: base button, primary, action, color-swatch, and the
+   "image button" pattern (transparent button wrapping a full-size image)
+   used across the lobby, header, and game-over screens.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+button {
+  width: 100%;
+  padding: var(--space-md) var(--space-lg);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--accent-blue);
+  color: var(--bg-app);
+  transition: background-color 0.2s;
+}
+button:hover:not(:disabled) {
+  background-color: #88eaff;
+}
+button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.primary-button {
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--accent-green);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color var(--transition-base);
+}
+.primary-button:hover {
+  background-color: #45a049;
+}
+.primary-button.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* --- Action buttons (castle / hole-tile / draw) --- */
+.castle-btn,
+.hole-tile-btn,
+.draw-btn {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.castle-btn:hover,
+.hole-tile-btn:hover,
+.draw-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--accent-blue);
+}
+.castle-btn.selected,
+.hole-tile-btn.selected,
+.draw-btn.selected {
+  box-shadow: 0 0 15px var(--accent-gold);
+  transform: scale(1.15);
+}
+
+.action-disabled {
+  opacity: 0.4;
+  filter: grayscale(80%);
+  cursor: not-allowed;
+  pointer-events: none; /* Makes the element genuinely unclickable */
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.action-required {
+  /* Draws the user's attention when an action is required */
+  animation: requiredPulse 1.5s infinite;
+  box-shadow: 0 0 20px #ffdf7e, 0 0 10px white;
+}
+
+/* --- Color selector swatches --- */
+.color-selector {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: var(--space-lg);
+}
+.color-button {
+  border: 3px solid transparent;
+  border-radius: var(--radius-round);
+  cursor: pointer;
+  height: 40px;
+  padding: 0;
+  transition: transform 0.2s, border-color 0.2s;
+  width: 40px;
+}
+.color-button:hover {
+  transform: scale(1.1);
+}
+.color-button.selected {
+  border-color: var(--text-main);
+  transform: scale(1.2);
+}
+.color-button[data-color='blue'] { background-color: var(--color-blue); }
+.color-button[data-color='green'] { background-color: #28a745; }
+.color-button[data-color='red'] { background-color: var(--color-red); }
+.color-button[data-color='yellow'] { background-color: var(--color-yellow); }
+
+/* ==========================================================================
+   Image button pattern
+   A transparent button wrapping a full-size image, used for: start-game,
+   how-to-play, start-round, draw-tile, and join-game. These five were
+   near-identical copy/paste blocks in the original files; kept as
+   separate classes (renaming would require matching JSX changes) but
+   consolidated their shared rules with a comment so future edits only
+   need to happen in one clearly-marked place.
+   ========================================================================== */
+
+.start-game-image-btn,
+.how-to-play-image-btn,
+.start-round-image-btn,
+.draw-tile-image-btn,
+.join-game-image-btn {
+  background: transparent !important;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.start-game-image-btn,
+.start-round-image-btn,
+.draw-tile-image-btn,
+.join-game-image-btn {
+  margin-top: var(--space-md);
+}
+
+/* how-to-play-image-btn differs slightly from its siblings in the original
+   (no filter transition, explicit outline reset) — preserved as-is. */
+.how-to-play-image-btn {
+  outline: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* draw-tile-image-btn keeps its original negative offset — this pulls the
+   button up to sit flush against the element above it in the actions panel. */
+.draw-tile-image-btn {
+  margin-top: -80px;
+}
+
+.start-game-image-btn img,
+.start-round-image-btn img,
+.draw-tile-image-btn img,
+.join-game-image-btn img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.how-to-play-image-btn img {
+  width: 222px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+}
+
+.start-game-image-btn:hover,
+.how-to-play-image-btn:hover,
+.start-round-image-btn:hover,
+.join-game-image-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+.draw-tile-image-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.start-game-image-btn:active,
+.how-to-play-image-btn:active,
+.start-round-image-btn:active,
+.draw-tile-image-btn:active:not(:disabled),
+.join-game-image-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.draw-tile-image-btn:disabled,
+.join-game-image-btn:disabled {
+  cursor: not-allowed;
+}
+.draw-tile-image-btn:disabled img,
+.join-game-image-btn:disabled img {
+  filter: grayscale(100%) opacity(0.5);
+}
+
+/* --- Standard text join/play buttons --- */
+.join-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: var(--accent-blue);
+  color: var(--bg-app);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  margin-top: var(--space-md);
+}
+.join-button:hover:not(:disabled) {
+  background-color: #88eaff;
+  transform: translateY(-2px);
+}
+.join-button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.play-again-btn {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: #4cafef;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.play-again-btn:hover {
+  background: #3990d6;
+}

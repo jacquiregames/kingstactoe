@@ -1,0 +1,35 @@
+/* ==========================================================================
+   components/travelers.css
+   Background "traveler" sprites that cross the screen. The keyframes they
+   use (travelLeftToRight, patrolRightToLeft, phase1LeftToRight, etc.) live
+   in animations.css and match the camelCase animationName strings set in
+   Travelers.tsx / traveler-config.ts.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.travelers-container {
+  position: fixed; /* Covers the whole screen */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  pointer-events: none; /* Lets clicks pass through to content behind */
+  z-index: 0; /* Behind all other content */
+}
+
+.traveler {
+  position: absolute;
+  will-change: transform; /* Performance optimization */
+}
+
+.end-image {
+  position: fixed;
+  top: 12%;
+  left: 78.6%;
+  width: 80px;
+  height: 80px;
+  z-index: 1001;
+  animation: fadeIn 1s ease-out;
+  pointer-events: none;
+}

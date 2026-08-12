@@ -1,0 +1,38 @@
+/* ==========================================================================
+   index.css
+   Single entry point. Import this one file (or mirror this exact order as
+   separate <link>/import statements) so tokens and animations are defined
+   before anything that uses them.
+   ========================================================================== */
+
+/* 1. Design tokens — variables only, must load first */
+@import './tokens.css';
+
+/* 2. Reset + base element styles */
+@import './base.css';
+
+/* 3. All @keyframes — defined once, shared by everything below */
+@import './animations.css';
+
+/* 4. Layout: the main game screen's structural regions */
+@import './layout/header.css';
+@import './layout/board.css';
+@import './layout/sidebar.css';
+
+/* 5. Components: self-contained UI pieces, any load order is fine here */
+@import './components/buttons.css';
+@import './components/modals.css';
+@import './components/scoring.css';
+@import './components/gameover.css';
+@import './components/loading-screen.css';
+@import './components/travelers.css';
+@import './components/lobby.css';
+@import './components/highscore.css';
+
+/*
+  NOTE on @import: this file is provided for convenience/reference. In a
+  Vite + React app, prefer importing each CSS file directly from its
+  matching component file (as the original project did) rather than
+  chaining @import statements, which block rendering while each file
+  loads in sequence. See MIGRATION.md for the old-file -> new-file map.
+*/

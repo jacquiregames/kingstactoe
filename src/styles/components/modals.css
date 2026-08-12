@@ -1,0 +1,189 @@
+/* ==========================================================================
+   components/modals.css
+   Generic modal shell, round-over winner announcement, and the
+   how-to-play popup.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.modal-content {
+  animation: fadeIn 0.5s ease-in-out;
+  background-color: var(--bg-panel);
+  border: 2px solid var(--accent-blue);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  text-align: center;
+}
+.modal-content button {
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-xl);
+  width: auto;
+}
+.modal-overlay {
+  align-items: center;
+  background-color: transparent; /* No dimming */
+  pointer-events: auto; /* Still allow modal clicks */
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: var(--z-modal);
+}
+.modal-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* --- Round Over Modal --- */
+.winner-announcement {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+.winner-castle {
+  width: 60px;
+  height: 60px;
+  margin-bottom: 10px;
+}
+.winner-display {
+  background: linear-gradient(45deg, var(--gold), #ffa500);
+  display: inline-block;
+  padding: var(--space-lg);
+  border-radius: 15px;
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+.winner-declaration {
+  background-color: var(--bg-app);
+  border-radius: var(--radius-md);
+  margin: -10px 0 var(--space-lg) 0;
+  padding: 10px;
+}
+.winner-declaration h3 {
+  color: var(--accent-gold);
+  font-size: 1.8em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* Small "pop" effect on a score number, e.g. when a round bonus lands. */
+.score-change {
+  display: inline-block;
+  transition: transform var(--transition-base), color var(--transition-base);
+}
+.score-change:active,
+.score-change.animate {
+  transform: scale(1.2);
+  color: var(--gold);
+}
+.score-change-anim {
+  display: inline-block;
+  animation: pop 0.4s ease;
+}
+
+/* ==========================================================================
+   How-to-play popup
+   ========================================================================== */
+
+.howtoplay-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-overlay);
+}
+
+.howtoplay-popup {
+  background: darkgrey;
+  color: black;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90%;
+  overflow-y: hidden;
+  border-radius: var(--radius-xl);
+  padding: var(--space-lg);
+  position: relative;
+  box-shadow: var(--shadow-soft);
+}
+
+.howtoplay-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #a00;
+  color: white;
+  border: none;
+  border-radius: var(--radius-round);
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  padding: 0;
+}
+.howtoplay-close:hover {
+  background: #c00;
+}
+
+.howtoplay-title {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.howtoplay-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  font-size: larger;
+}
+
+.howtoplay-column section {
+  margin-bottom: var(--space-lg);
+}
+.howtoplay-column2 section {
+  margin-bottom: 0;
+}
+
+.scoring-section p {
+  margin: 4px 0; /* tighten vertical spacing */
+  line-height: 1.2;
+}
+
+.castle-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.castle-row img {
+  width: 90px;
+  height: auto;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.tile-card {
+  background: transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md);
+  text-align: center;
+}
+.tile-card img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 5px;
+}
+.tile-card h3 {
+  margin: 0;
+  font-weight: bold;
+}

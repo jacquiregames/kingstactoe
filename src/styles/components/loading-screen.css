@@ -1,0 +1,46 @@
+/* ==========================================================================
+   components/loading-screen.css
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.loading-screen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;
+  z-index: var(--z-loading-screen);
+}
+
+.loading-text {
+  color: white;
+  margin-top: var(--space-lg);
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  /* Renamed from a "pulse" keyframe that collided with the scale-based
+     pulse used elsewhere (see animations.css) — this one only fades opacity. */
+  animation: opacityPulse 1.5s infinite;
+}
+
+.loader {
+  display: inline-flex;
+  gap: 10px;
+}
+.loader::before,
+.loader::after {
+  content: '';
+  height: 20px;
+  aspect-ratio: 1;
+  border-radius: var(--radius-round);
+  background: radial-gradient(farthest-side, #000 95%, #0000) 50%/8px 8px no-repeat #fff;
+  animation: loaderSpin 1.5s infinite alternate;
+}
+.loader::after {
+  --s: -1;
+}

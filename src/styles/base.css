@@ -1,0 +1,85 @@
+/* ==========================================================================
+   base.css
+   Global resets, base element styles, and small utility classes.
+   Depends on: tokens.css
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
+
+/* --- Global Resets --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root,
+.App {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevents accidental horizontal scroll */
+}
+
+/* --- Base Styles --- */
+body {
+  background-image: url('/images/background/background.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  transition: background-image var(--transition-slow);
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+}
+
+.app-header {
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+/* --- Utility Classes --- */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/* --- Shimmer text effect (reused by lobby join-header) --- */
+.shimmer-text {
+  position: relative;
+}
+
+.shimmer-text::after {
+  /* Uses the data-text attribute on the element for the shimmering copy */
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 40%,
+    rgba(255, 255, 255, 0.8) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 3s infinite linear;
+}

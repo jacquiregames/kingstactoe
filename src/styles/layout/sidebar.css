@@ -1,0 +1,236 @@
+/* ==========================================================================
+   layout/sidebar.css
+   Player action panel (hand, castle inventory) and the game log.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.player-actions {
+  background-color: var(--bg-panel);
+  border: 3px solid var(--accent-blue);
+  font-family: var(--font-main);
+  border-radius: var(--radius-lg);
+  padding: 15px 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-width: 600px;
+  max-height: 730px;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-panel-glow);
+  z-index: 1;
+}
+
+.actions-row {
+  display: flex;
+  gap: var(--space-lg);
+  width: 100%;
+}
+.actions-row .action-box {
+  flex: 1;
+}
+.action-box {
+  background-color: var(--bg-panel-hover);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+}
+.player-actions .hand {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-lg);
+  min-height: 80px;
+}
+
+.castle-inventory {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 50px;
+  gap: var(--space-sm);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.castle-inventory .tile-image {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+
+.castle-inventory .tile-image:not(.selected):hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.error-message {
+  background-color: #721c24;
+  border: 1px solid #f5c6cb;
+  border-radius: var(--radius-sm);
+  color: #f8d7da;
+  margin: 0;
+  width: auto;
+  max-width: 100%;
+  min-height: 20px;
+  opacity: 1;
+  padding: var(--space-md) 15px;
+  transition: opacity 0.3s ease-in-out;
+}
+.error-message:empty {
+  opacity: 0;
+}
+
+.next-round-container {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-lg);
+  border-top: 2px solid var(--bg-panel-hover);
+}
+.next-round-container button {
+  width: 100%;
+}
+.next-round-container p {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.tile-preview-area {
+  height: 270px;
+  flex-shrink: 0; /* Prevents this box from shrinking */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  border-top: 2px solid var(--border-subtle);
+  margin-top: 0;
+  padding: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md); /* Match container's rounded bottom */
+}
+
+.tile-preview-area img,
+.tile-preview-area video {
+  width: 250px;
+  height: 250px;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+}
+
+.tile-preview-placeholder {
+  color: var(--text-placeholder);
+  font-style: italic;
+  text-align: center;
+}
+
+/* --- Game Log --- */
+.game-log-container {
+  background-color: var(--bg-app);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 270px;
+  max-height: 730px;
+  border: 3px solid var(--border-subtle);
+  box-shadow: var(--shadow-panel-glow);
+  z-index: 1;
+}
+.game-log-container h2 {
+  margin-top: 0;
+  text-align: center;
+  flex-shrink: 0; /* Prevent the title from being scrolled away */
+}
+.game-log {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: var(--bg-panel);
+  border-radius: var(--radius-md);
+  scroll-behavior: smooth;
+}
+.game-log li {
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.log-entry {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--bg-panel-hover);
+  font-size: 1.1em;
+  font-weight: 600;
+  line-height: 1.4;
+  animation: logEntryAppear 0.5s ease-out forwards;
+  display: flex;
+  flex-wrap: wrap; /* Allows text to wrap if needed */
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0;
+}
+.log-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+.log-entry .log-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.log-entry:last-child {
+  border-bottom: none;
+}
+.log-entry span[data-color='red'] { color: #ff8a80; font-weight: bold; }
+.log-entry span[data-color='blue'] { color: var(--color-blue); font-weight: bold; }
+.log-entry span[data-color='green'] { color: var(--color-green); font-weight: bold; }
+.log-entry span[data-color='yellow'] { color: var(--color-yellow); font-weight: bold; }
+
+.log-tile-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  vertical-align: middle; /* Aligns the icon nicely with the text */
+  margin: 0 4px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  padding: 2px;
+}
+
+.log-system-message {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 6px 0;
+  font-size: 0.9em;
+}
+
+.log-winner-entry {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 1.1em;
+  font-weight: bold;
+  color: var(--gold);
+  padding: 5px;
+  background-color: rgba(255, 215, 0, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.log-round-divider {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-sm) 0;
+  margin: 5px 0;
+  border-top: 1px dashed var(--bg-panel-hover);
+  border-bottom: 1px dashed var(--bg-panel-hover);
+}
+
+.log-round-image {
+  width: 85%; /* Fits within the log container padding */
+  height: auto; /* Maintains aspect ratio */
+  object-fit: contain;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+}

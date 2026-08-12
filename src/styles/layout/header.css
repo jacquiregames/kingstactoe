@@ -1,0 +1,269 @@
+/* ==========================================================================
+   layout/header.css
+   Game header: round info, player panels, turn indicator.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--bg-app);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-lg);
+  border-bottom: 3px solid var(--accent-gold); /* Acts as a fallback */
+  box-shadow: var(--shadow-soft);
+  flex-shrink: 0;
+  transition: border-bottom-color 0.4s ease-in-out; /* Smooth color swap */
+}
+
+.header-info-blocks {
+  display: flex;
+  gap: var(--space-lg);
+  flex: 1;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.round-info-block {
+  background-color: transparent;
+  width: 250px;
+  height: 100px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* !important needed here: overrides the inline background-color the round
+   image swap applies to this element while transitioning. */
+.round-info-block.transparent-bg {
+  background-color: transparent !important;
+}
+
+.round-image {
+  width: auto;
+  height: 100px;
+  object-fit: contain;
+  display: block;
+}
+
+.header-help-btn {
+  background: transparent !important;
+  border: none;
+  padding: 0;
+  margin-left: var(--space-md);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  transition: transform var(--transition-fast);
+}
+
+.header-help-btn img {
+  height: 50px !important;
+  width: auto;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.header-help-btn:hover {
+  transform: scale(1.1);
+  filter: brightness(1.1);
+  background-color: transparent;
+}
+
+.header-player-list {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--space-lg);
+  flex: 2;
+  justify-content: center;
+}
+
+.header-title {
+  font-size: 1.8em;
+  font-weight: bold;
+  text-align: right;
+  flex: 1;
+}
+
+.header-player-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: var(--bg-panel);
+  padding: 6px var(--space-md);
+  border-radius: var(--radius-md);
+  min-width: 180px;
+  min-height: 60px;
+  position: relative;
+  overflow: visible;
+  transition: box-shadow var(--transition-base);
+  z-index: 1;
+}
+
+.player-info-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.player-flame-overlay {
+  position: absolute;
+  top: -33px;
+  left: -3px; /* Pull back 3px to perfectly cover the left border */
+  width: calc(100% + 6px); /* Span the full width plus both 3px borders */
+  height: 30px;
+  pointer-events: none;
+  z-index: var(--z-flying-tiles);
+  object-fit: cover; /* Forces the flames to span the full width with no gaps */
+}
+
+.info-block {
+  background-color: var(--bg-panel);
+  padding: 0 10px;
+  border-radius: var(--radius-md);
+  text-align: center;
+  white-space: nowrap;
+  min-width: 100px;
+}
+
+.tile-info-block {
+  background-color: var(--bg-panel);
+  padding: var(--space-sm) 6px;
+  border: 3px solid var(--gold);
+  border-radius: var(--radius-md);
+  text-align: center;
+  white-space: nowrap;
+  min-width: 120px;
+  margin-right: 16px;
+  font-weight: bold;
+}
+
+.info-block-value {
+  font-weight: bold;
+}
+
+/* Shared 25x25 stone icon — also used in components/lobby.css player-list-item. */
+.player-stone-icon {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.player-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.1em;
+  background-color: var(--bg-panel-hover);
+  padding: var(--space-md) 15px;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-slow), box-shadow var(--transition-base);
+}
+
+.player-info-item.current {
+  box-shadow: 0 0 15px var(--accent-gold);
+}
+
+.player-info-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  font-size: 1.3em;
+  flex-grow: 1;
+}
+
+.player-bot-badge {
+  font-size: 0.75em;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+/* Fixed: source had a corrupted value here ("1.6```em") from a bad
+   paste, and the rule was declared twice in the same file — the
+   transition lived on a second, duplicate block. Merged into one. */
+.player-info-score {
+  font-family: var(--font-mono);
+  font-weight: bold;
+  font-size: 1.6em;
+  transition: transform var(--transition-base);
+}
+
+/* Player color accents, shared between name and score spans */
+.player-info-name span[data-color='red'],
+.player-info-score span[data-color='red'] {
+  color: var(--color-blue-alt);
+}
+.player-info-name span[data-color='blue'],
+.player-info-score span[data-color='blue'] {
+  color: var(--color-blue);
+}
+.player-info-name span[data-color='green'],
+.player-info-score span[data-color='green'] {
+  color: var(--color-green);
+}
+.player-info-name span[data-color='yellow'],
+.player-info-score span[data-color='yellow'] {
+  color: var(--color-yellow);
+}
+
+.header-castle-inventory {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: 22px;
+}
+
+.header-castle-icon {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.turn-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-lg);
+  margin: 15px auto;
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-panel-dark);
+  color: var(--text-main);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: all var(--transition-base);
+  max-width: 300px;
+}
+
+.turn-indicator.active {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.turn-indicator-stone {
+  width: 28px;
+  height: 28px;
+  margin-right: var(--space-md);
+  object-fit: contain;
+}
+
+.turn-text {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 0.9rem;
+}

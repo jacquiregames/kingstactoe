@@ -1,0 +1,313 @@
+/* ==========================================================================
+   animations.css
+   All @keyframes definitions live here, and ONLY keyframes — the classes
+   that apply them live next to the component they animate. Keyframe names
+   are global in CSS (last definition wins for every usage on the page), so
+   keeping them in one file with unique names prevents silent collisions.
+
+   NOTE: this file previously existed in three places with the same keyframe
+   name defined differently in each ("pulse" and "fadeIn"), which meant
+   whichever file loaded last silently overrode animations elsewhere on the
+   page. Those have been renamed/deduped below — see MIGRATION.md.
+   ========================================================================== */
+
+/* --- Fades / entrances --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes logEntryAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rowFadeIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Pulses --- */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Renamed from a duplicate "pulse" keyframe that only faded opacity.
+   Used by the loading screen text. */
+@keyframes opacityPulse {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes highlightPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes borderPulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@keyframes pulseGlow {
+  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* Added: ".score-highlight" referenced this keyframe but it was never
+   defined anywhere, so the animation silently did nothing. This mirrors
+   the style of pulseGlow using the shared gold token. */
+@keyframes scoreGlow {
+  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6); }
+  50% { box-shadow: 0 0 12px 4px rgba(255, 215, 0, 0.6); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.6); }
+}
+
+@keyframes requiredPulse {
+  0% { transform: scale(1.1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.1); }
+}
+
+/* --- Flashes / glows --- */
+@keyframes flash {
+  0%, 100% { background-color: transparent; }
+  50% { background-color: var(--flash-color, rgba(255, 215, 0, 0.3)); }
+}
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8)); }
+  to {
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1))
+      drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+  }
+}
+
+@keyframes glowFadeOut {
+  0% {
+    box-shadow: inset 0 0 20px 10px var(--flash-color, rgba(255, 255, 255, 0.7));
+    opacity: 0.7;
+  }
+  100% {
+    box-shadow: inset 0 0 80px 40px var(--flash-color, rgba(255, 255, 255, 0.7));
+    opacity: 0;
+  }
+}
+
+@keyframes lastPlacedFlash {
+  0% { background-color: rgba(0, 200, 255, 0.5); }
+  100% { background-color: rgba(0, 200, 255, 0.15); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* --- Tile / piece placement --- */
+@keyframes draw {
+  from { transform: scale(0.5) rotate(-15deg); opacity: 0; }
+  to { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes placeAnim {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes placeTile {
+  0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+  50% { transform: scale(1.1) rotate(2deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes placeCastle {
+  0% { transform: translateY(-20px) scale(0.8); opacity: 0; }
+  50% { transform: translateY(5px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* --- Score effects --- */
+@keyframes pop {
+  0% { transform: scale(1); color: inherit; }
+  30% { transform: scale(1.3); color: var(--gold); }
+  100% { transform: scale(1); color: inherit; }
+}
+
+@keyframes popFade {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+  50% { opacity: 1; transform: translate(-50%, -60%) scale(1.2); }
+  100% { opacity: 0; transform: translate(-50%, -80%) scale(1); }
+}
+
+@keyframes scorePopLive {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+@keyframes scorePopLanding {
+  0% { transform: scale(1); color: inherit; }
+  30% { transform: scale(1.4); color: var(--gold); }
+  100% { transform: scale(1); color: inherit; }
+}
+
+@keyframes scoreTravel {
+  0% { transform: translate(var(--start-x), var(--start-y)) scale(1.2); opacity: 1; }
+  100% { transform: translate(var(--end-x), var(--end-y)) scale(1); opacity: 1; }
+}
+
+/* --- Screen traversal (game-over banner) --- */
+@keyframes traverseScreen {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}
+
+/* --- Traveler animations ---
+   Names now match Travelers.tsx / traveler-config.ts, which set these via
+   inline `animationName` styles (e.g. animationName: 'patrolRightToLeft').
+   If you add a new traveler entry, use these exact camelCase strings. */
+@keyframes travelLeftToRight {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}
+
+@keyframes travelRightToLeft {
+  from { transform: translateX(100vw); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes patrolRightToLeft {
+  0% { transform: translateX(100vw); }
+  50% { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); }
+}
+
+@keyframes patrolLeftToRight {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+
+/* PHASE 1: runs 0% -> 50%, waits 50% -> 100% */
+@keyframes phase1LeftToRight {
+  0% { transform: translateX(-100%); opacity: 1; }
+  45% { transform: translateX(100vw); opacity: 1; }
+  46% { opacity: 0; } /* hide while resetting */
+  100% { transform: translateX(100vw); opacity: 0; }
+}
+
+@keyframes phase1RightToLeft {
+  0% { transform: translateX(100vw); opacity: 1; }
+  45% { transform: translateX(-100%); opacity: 1; }
+  46% { opacity: 0; }
+  100% { transform: translateX(-100%); opacity: 0; }
+}
+
+/* PHASE 2: waits 0% -> 50%, runs 50% -> 100% */
+@keyframes phase2LeftToRight {
+  0% { transform: translateX(-100%); opacity: 0; }
+  49% { transform: translateX(-100%); opacity: 0; }
+  50% { transform: translateX(-100%); opacity: 1; }
+  95% { transform: translateX(100vw); opacity: 1; }
+  100% { transform: translateX(100vw); opacity: 1; }
+}
+
+@keyframes phase2RightToLeft {
+  0% { transform: translateX(100vw); opacity: 0; }
+  49% { transform: translateX(100vw); opacity: 0; }
+  50% { transform: translateX(100vw); opacity: 1; }
+  95% { transform: translateX(-100%); opacity: 1; }
+  100% { transform: translateX(-100%); opacity: 1; }
+}
+
+/* --- Logo intro animations --- */
+@keyframes drawText {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes fillText {
+  to { fill: #111111; stroke: transparent; }
+}
+
+@keyframes kttStack {
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dropCrown {
+  0% { opacity: 0; transform: translateY(-50px) scale(0.5) rotate(-20deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+/* --- Loading screen dot spinner --- */
+@keyframes loaderSpin {
+  0%, 20% { transform: scaleX(var(--s, 1)) rotate(0deg); clip-path: inset(0); }
+  60%, 100% { transform: scaleX(var(--s, 1)) rotate(30deg); clip-path: inset(40% 0 0); }
+}
+
+/* --- High-score panel embellishments --- */
+@keyframes riseEmber {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  10% { opacity: 1; }
+  60% { opacity: 0.7; }
+  100% { transform: translateY(-120px) scale(0.3) translateX(var(--drift)); opacity: 0; }
+}
+
+@keyframes titlePulse {
+  0%, 100% { text-shadow: 0 0 8px #ff8c00, 0 0 18px #ff4500, 0 0 2px #fff; }
+  50% { text-shadow: 0 0 14px #ffcc00, 0 0 30px #ff6000, 0 0 4px #fff; }
+}
+
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+@keyframes crownBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes flameDance {
+  0% { transform: scaleY(1) scaleX(1) rotate(-4deg); }
+  100% { transform: scaleY(1.2) scaleX(0.85) rotate(4deg); }
+}
+
+/* --- Reduced motion --- */
+/* Applies last so it wins the cascade. Collapses every CSS animation and
+   transition on the page to a single imperceptible frame instead of
+   removing them outright — this keeps end states (opacity: 1, final
+   transform, etc.) intact so nothing gets stuck mid-animation or invisible.
+   NOTE: this only covers CSS animations/transitions. FlyingTile.tsx and
+   GameOverModal.tsx animate via framer-motion in JS, which this media
+   query cannot reach — those need useReducedMotion() from framer-motion
+   directly in the component. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

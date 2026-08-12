@@ -1,0 +1,75 @@
+/* ==========================================================================
+   tokens.css
+   Single source of truth for design values used across the app.
+   Nothing here should render anything on its own — only variables.
+   ========================================================================== */
+
+:root {
+  /* --- Core surface colors --- */
+  --bg-app: #282c34;
+  --bg-panel: #3c4049;
+  --bg-panel-hover: #4a5260;
+  --bg-panel-dark: #2c3e50;
+
+  /* --- Accent colors --- */
+  --accent-gold: #ffc107;      /* UI accent: borders, active states */
+  --accent-blue: #61dafb;      /* UI accent: links, primary highlights */
+  --accent-green: #4caf50;     /* success / positive */
+  --accent-red: #f44336;       /* danger / negative */
+  --color-red: #dc3545;
+  --color-blue: #3ab2fc;
+  --color-blue-alt: #46a5e0;
+  --color-green: #b9f6ca;
+  --color-yellow: #ffe107;
+  --gold: #ffd700;             /* "treasure" gold — winners, scores, crowns */
+  --border-subtle: #aab2bd;    /* neutral panel borders */
+
+  /* --- Text --- */
+  --text-main: #ffffff;
+  --text-muted: #adb5bd;
+  --text-placeholder: #7f8c8d;
+
+  /* --- Fonts --- */
+  --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+
+  /* --- Spacing scale --- */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+  --space-xl: 30px;
+
+  /* --- Radius scale --- */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-round: 50%;
+
+  /* --- Transitions --- */
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease-in-out;
+
+  /* --- Shared shadows (deduped from repeated literals) --- */
+  --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.3);
+  --shadow-panel-glow: 0 0 10px rgba(255, 255, 255, 0.2);
+  --shadow-card: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+  /* --- Board geometry (single source for grid math) --- */
+  --board-cols: 6;
+  --board-rows: 5;
+  --board-cell-size: 120px;
+  --board-gap: 8px;
+
+  /* --- Z-Index Hierarchy Map --- */
+  --z-behind: -1;
+  --z-board: 10;
+  --z-overlay: 100;
+  --z-modal: 1000;
+  --z-flying-tiles: 2000;
+  --z-loading-screen: 9999;
+}

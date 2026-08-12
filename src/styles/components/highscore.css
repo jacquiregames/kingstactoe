@@ -1,0 +1,198 @@
+/* ==========================================================================
+   components/highscore.css
+   Floating high-score panel with ember/flame decoration.
+   Depends on: tokens.css, animations.css
+
+   NOTE: this file's ".score-value" was a duplicate class name with a
+   completely different definition in components/scoring.css (bold gold
+   text vs. this panel's serif/glow styling). Same name, two unrelated
+   rules — whichever file loaded last would silently apply to both. This
+   one is renamed to ".highscore-value"; update HighScore.tsx's className
+   to match (see MIGRATION.md).
+   ========================================================================== */
+
+.highscore-container {
+  position: fixed;
+  top: 180px;
+  right: 28px;
+  width: 200px;
+  z-index: var(--z-overlay);
+}
+
+.highscore-glow-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 3px;
+  background: linear-gradient(135deg, #ff8c00, var(--gold), #ff4500, var(--gold), #ff8c00);
+  background-size: 300% 300%;
+}
+
+.highscore-panel {
+  position: relative;
+  background: linear-gradient(
+    160deg,
+    rgba(10, 5, 2, 0.96) 0%,
+    rgba(30, 12, 4, 0.97) 50%,
+    rgba(15, 7, 2, 0.96) 100%
+  );
+  border-radius: var(--radius-xl);
+  padding: 18px var(--space-lg) 16px;
+  overflow: hidden;
+}
+
+.highscore-panel::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 180, 0, 0.18);
+  pointer-events: none;
+}
+
+/* --- Animated ember particles --- */
+.embers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.ember {
+  position: absolute;
+  bottom: -8px;
+  width: 4px;
+  height: 4px;
+  border-radius: var(--radius-round);
+  background: radial-gradient(circle, #fff7a0 0%, #ffaa00 50%, transparent 100%);
+  animation: riseEmber var(--dur) ease-in infinite;
+  animation-delay: var(--delay);
+  left: var(--left);
+  opacity: 0;
+}
+
+.highscore-title {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-shadow: 0 0 8px #ff8c00, 0 0 18px #ff4500, 0 0 2px #fff;
+  margin-bottom: var(--space-lg);
+  position: relative;
+  animation: titlePulse 2.5s ease-in-out infinite;
+}
+
+/* --- Score rows --- */
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  padding: var(--space-sm) 10px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 140, 0, 0.06);
+  border: 1px solid rgba(255, 140, 0, 0.12);
+  transition: background 0.3s;
+  animation: rowFadeIn 0.6s ease forwards;
+  opacity: 0;
+}
+.score-row:last-child {
+  margin-bottom: 0;
+}
+.score-row:hover {
+  background: rgba(255, 180, 0, 0.14);
+  border-color: rgba(255, 200, 0, 0.35);
+}
+.score-row:nth-child(1) { animation-delay: 0.1s; }
+.score-row:nth-child(2) { animation-delay: 0.25s; }
+.score-row:nth-child(3) { animation-delay: 0.4s; }
+
+/* --- Rank badge --- */
+.rank-badge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-round);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: bold;
+  position: relative;
+  animation: badgePulse 3s ease-in-out infinite;
+}
+
+.rank-1 {
+  background: radial-gradient(circle at 35% 35%, #fff9a0, var(--gold), #b8860b);
+  color: #3d1a00;
+  box-shadow: 0 0 10px 3px rgba(255, 215, 0, 0.7), 0 0 20px 5px rgba(255, 165, 0, 0.4);
+}
+.rank-2 {
+  background: radial-gradient(circle at 35% 35%, #eaeaea, #c0c0c0, #707070);
+  color: #1a1a1a;
+  box-shadow: 0 0 8px 2px rgba(200, 200, 200, 0.6), 0 0 16px 4px rgba(150, 150, 150, 0.3);
+}
+.rank-3 {
+  background: radial-gradient(circle at 35% 35%, #ffcca0, #cd7f32, #7b4618);
+  color: #ffe0b0;
+  box-shadow: 0 0 8px 2px rgba(205, 127, 50, 0.6), 0 0 16px 4px rgba(150, 80, 20, 0.3);
+}
+
+/* --- Score info --- */
+.score-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.highscore-value {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--gold);
+  text-shadow: 0 0 6px #ff8c00;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player-name {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: rgba(255, 210, 140, 0.8);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+/* --- Crown icon for #1 --- */
+.crown-icon {
+  font-size: 21px;
+  color: var(--gold);
+  animation: crownBob 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+/* --- Flame decoration at bottom --- */
+.flame-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: 14px;
+}
+
+.flame {
+  font-size: 16px;
+  animation: flameDance var(--fdur) ease-in-out infinite alternate;
+  animation-delay: var(--fdelay);
+  transform-origin: bottom center;
+  display: inline-block;
+}

@@ -1,0 +1,224 @@
+/* ==========================================================================
+   components/scoring.css
+   Live score overlays on the board, the scoring-step breakdown modal,
+   and the flying-score animation.
+   Depends on: tokens.css, animations.css
+   ========================================================================== */
+
+.line-score-breakdown.col-layout {
+  /* Override the base flex layout with a strict 2-column grid */
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 2px 8px; /* 2px vertical gap, 8px horizontal gap */
+  max-width: none;
+}
+.line-score-breakdown.row-layout {
+  /* Use grid to force a 2x2 layout instead of a single vertical stack */
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  align-items: center;
+  gap: 2px 8px; /* 2px vertical gap, 8px horizontal gap */
+}
+.player-line-score {
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.row-scores {
+  grid-row: 1 / 6;
+  grid-column: 7 / 8;
+  display: contents;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.col-scores {
+  grid-row: 6 / 7;
+  grid-column: 1 / 7;
+  display: contents;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+ 
+
+.score-display-container {
+  grid-row: var(--grid-row);
+  grid-column: var(--grid-column);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border-radius: var(--radius-sm);
+  width: 100%;
+  height: 100%;
+  font-size: 1.7em;
+  font-weight: bold;
+  color: var(--accent-gold);
+}
+
+.score-display {
+  font-family: var(--font-mono);
+}
+
+.score-pop {
+  transform: scale(1.2);
+  color: var(--accent-green);
+  animation: scorePopLive 0.4s ease-out;
+}
+.score-pop-anim {
+  animation: scorePopLive 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.score-pop-landing {
+  animation: scorePopLanding 0.4s ease-out;
+}
+
+.total-live-scores {
+  grid-row: 6 / 7;
+  grid-column: 7 / 8;
+  /* Use grid instead of flex column to force a 2x2 layout */
+  display: grid;
+  grid-template-columns: auto auto;
+  align-content: center;
+  justify-content: start;
+  gap: 6px 12px; /* 6px vertical gap, 12px horizontal gap */
+  padding-left: var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.player-total-score {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+  font-family: var(--font-mono);
+  font-size: 1.4em;
+}
+.player-total-score .player-stone-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.score-highlight {
+  animation: scoreGlow 1.5s infinite;
+  border-radius: var(--radius-lg);
+}
+
+.scoring-animation {
+  margin: var(--space-lg) 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.scoring-step {
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 0.7;
+  transition: all var(--transition-base);
+}
+.scoring-step.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.step-castles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.castle-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px var(--space-md);
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.score-value {
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.score-overlay {
+  font-size: 18px;
+  color: var(--gold);
+  pointer-events: none;
+  animation: popFade 1s ease-out forwards;
+}
+
+.flying-scores-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: var(--z-flying-tiles);
+}
+
+.flying-score {
+  position: absolute;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-shadow: 0 0 5px black;
+  animation: scoreTravel 1.4s ease-in forwards;
+}
+
+.scoring-container {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: var(--space-lg);
+}
+
+.score-comparison {
+  margin-top: var(--space-lg);
+}
+
+.score-changes-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.player-change {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Renamed from a second, unrelated ".score-change" that collided with the
+   pop-effect class of the same name in components/modals.css — same name,
+   two different layouts, whichever CSS file loaded last silently won for
+   both. This one only affects the row inside the score-comparison list. */
+.score-change-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.change-arrow {
+  font-weight: bold;
+}
+.change-arrow.positive {
+  color: var(--accent-green);
+}
+.change-arrow.negative {
+  color: var(--accent-red);
+}
