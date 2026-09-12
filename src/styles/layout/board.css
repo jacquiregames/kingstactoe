@@ -229,7 +229,7 @@
 }
 
 .pulse-border {
-  animation: borderPulse 2s infinite;
+  animation: borderPulse 2s infinite ease-in-out;
 }
 
 /* ==========================================================================
@@ -278,12 +278,12 @@
 }
 
 /* Image sources */
-.goldmine-border-h { background-image: url('/images/borders/goldmine_border_h.gif'); }
-.goldmine-border-v { background-image: url('/images/borders/goldmine_border_v.gif'); }
-.dragon-border-h { background-image: url('/images/borders/dragon_border_h.gif'); }
-.dragon-border-v { background-image: url('/images/borders/dragon_border_v.gif'); }
-.wizard-border-h { background-image: url('/images/borders/wizard_border_h.gif'); }
-.wizard-border-v { background-image: url('/images/borders/wizard_border_v.gif'); }
+.goldmine-border-h { background-image: url('/images/borders/goldmine_border_h.webp'); }
+.goldmine-border-v { background-image: url('/images/borders/goldmine_border_v.webp'); }
+.dragon-border-h { background-image: url('/images/borders/dragon_border_h.webp'); }
+.dragon-border-v { background-image: url('/images/borders/dragon_border_v.webp'); }
+.wizard-border-h { background-image: url('/images/borders/wizard_border_h.webp'); }
+.wizard-border-v { background-image: url('/images/borders/wizard_border_v.webp'); }
 
 .board-flash {
   position: absolute;

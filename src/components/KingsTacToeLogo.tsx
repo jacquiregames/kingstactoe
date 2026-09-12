@@ -80,7 +80,7 @@ export const KingsTacToeLogo = () => {
       {/* Crown over the 'i' */}
       <img 
         ref={crownRef}
-        src="/images/stones/crown3.png" 
+        src="/images/stones/crown3.webp" 
         alt="Crown Dot"
         style={{
           position: 'absolute',

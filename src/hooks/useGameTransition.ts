@@ -10,7 +10,7 @@ interface UseGameTransitionProps {
 
 export function useGameTransition({ setGameState, setGameStarted, gameStarted }: UseGameTransitionProps) {
   const [videoTransition, setVideoTransition] = useState(false);
-  const [transitionVideoSrc, setTransitionVideoSrc] = useState<string>('/images/background/start.mp4');
+  const [transitionVideoSrc, setTransitionVideoSrc] = useState<string>('/videos/background/start.mp4');
   const isTransitioningRef = useRef(false);
   const transitionTimeoutRef = useRef<number | null>(null);
   const transitionVideoRef = useRef<HTMLVideoElement>(null);
@@ -38,7 +38,7 @@ export function useGameTransition({ setGameState, setGameStarted, gameStarted }:
     isTransitioningRef.current = true;
     setGameState(state);
     
-    const src = isStart ? '/images/background/start.mp4' : `/images/rounds/round${state.round}.mp4`;
+    const src = isStart ? '/videos/background/start.mp4' : `/videos/rounds/round${state.round}.mp4`;
     setTransitionVideoSrc(src);
     setVideoTransition(true);
 

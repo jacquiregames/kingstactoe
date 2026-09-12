@@ -78,7 +78,7 @@ function ParsedLogMessage({
       <div className="log-winner-entry">
         <span>
           <img
-            src={`/images/stones/${winnerColor}.png`}
+            src={`/images/stones/${winnerColor}.webp`}
             alt={`${winnerName}'s gem`}
             className="log-tile-icon"
           />
@@ -95,7 +95,7 @@ function ParsedLogMessage({
     return (
       <div className="log-round-divider">
         <img 
-          src={`/images/rounds/round${roundNum}.png`} 
+          src={`/images/rounds/round${roundNum}.webp`} 
           alt={`Round ${roundNum}`} 
           className="log-round-image"
         />
@@ -125,7 +125,7 @@ function ParsedLogMessage({
       <span className="log-entry">
         &nbsp;&nbsp;•&nbsp;
         <img
-          src={`/images/stones/${playerColor}.png`}
+          src={`/images/stones/${playerColor}.webp`}
           alt={`${playerName}'s gem`}
           className="log-tile-icon"
         />
@@ -135,7 +135,7 @@ function ParsedLogMessage({
   }
 
   // --- Player action ---
-  const actingPlayer = players && players.find((p) => message.startsWith(p + " "));
+  const actingPlayer = players && players.find((p) => message.startsWith(p + " ") || message.startsWith(p + "'s "));
 
   if (actingPlayer) {
     const playerColor = playerColors[actingPlayer];
@@ -159,7 +159,7 @@ function ParsedLogMessage({
       return (
         <span className="log-entry">
           <img
-            src={`/images/stones/${playerColor}.png`}
+            src={`/images/stones/${playerColor}.webp`}
             alt={`${actingPlayer}'s gem`}
             className="log-tile-icon"
           />
@@ -181,18 +181,66 @@ function ParsedLogMessage({
       );
     }
 
+
     // --- Pass ---
     if (message.includes("passed their turn")) {
       return (
         <span className="log-entry">
           <img
-            src={`/images/stones/${playerColor}.png`}
+            src={`/images/stones/${playerColor}.webp`}
             alt={`${actingPlayer}'s gem`}
             className="log-tile-icon"
           />
           {" passed their turn."}
         </span>
       );
+    }
+
+    // --- Requested Undo ---
+    if (message.includes("requested to undo their last move")) {
+      return (
+        <span className="log-entry">
+          <img
+            src={`/images/stones/${playerColor}.webp`}
+            alt={`${actingPlayer}'s gem`}
+            className="log-tile-icon"
+          />
+          {" Undo Requested"}
+        </span>
+      );
+    }
+
+    // --- Move Undone ---
+    if (message.includes("move was undone")) {
+      return (
+        <span className="log-entry">
+          <img
+            src={`/images/stones/${playerColor}.webp`}
+            alt={`${actingPlayer}'s gem`}
+            className="log-tile-icon"
+          />
+          {" Undo Approved"}
+        </span>
+      );
+    }
+
+    // --- Denied Undo ---
+    if (message.includes("denied") && message.includes("undo request")) {
+      const deniedMatch = message.match(/denied (.*)'s undo request/);
+      if (deniedMatch) {
+        const requester = deniedMatch[1];
+        const requesterColor = playerColors[requester];
+        return (
+          <span className="log-entry">
+            <img
+              src={`/images/stones/${playerColor}.webp`}
+              alt={`${actingPlayer}'s gem`}
+              className="log-tile-icon"
+            />
+            {" Rejected Request"}
+          </span>
+        );
+      }
     }
   }
 
@@ -237,14 +285,19 @@ export function GameLog({
   if (hasDragon && hasWizard && gameState.gameLog.length > 0) {
     const lastLog = gameState.gameLog[gameState.gameLog.length - 1];
     if (lastLog.includes("the Dragon on ")) {
-      specialVideo = "/images/rounds/wizard_dragon.mp4";
+      specialVideo = "/videos/rounds/wizard_dragon.mp4";
     } else if (lastLog.includes("the Wizard on ")) {
-      specialVideo = "/images/rounds/dragon_wizard.mp4";
+      specialVideo = "/videos/rounds/dragon_wizard.mp4";
     }
   }
 
-  return (
-    <div className="game-log-container" style={{ borderColor: currentPlayerHex }}>
+  return (  
+    <div 
+      className={`game-log-container ${
+        isMyTurn ? 'pulse-border' : ''
+      }`} 
+      style={{ border: `3px solid ${currentPlayerHex}`, '--pulse-color': currentPlayerHex } as React.CSSProperties}
+    >
       <ul className="game-log" ref={logListRef}>
         {log.map((entry, i) => (
           <li key={i}>
@@ -261,11 +314,11 @@ export function GameLog({
         {hoveredTile && getTileImagePath(hoveredTile) ? (
           <img src={getTileImagePath(hoveredTile)} alt="Tile Preview" />
         ) : gameState.isGameOver ? (  
-          <video src="/images/rounds/gameover.mp4" autoPlay loop playsInline />
+          <video src="/videos/rounds/gameover.mp4" autoPlay loop playsInline />
         ) : specialVideo ? (
           <video src={specialVideo} autoPlay loop playsInline />
         ) : isMyTurn ? (
-          <video src="/images/rounds/yourturn2.mp4" autoPlay loop playsInline />
+          <video src="/videos/rounds/yourturn2.mp4" autoPlay loop playsInline />
         ) : (
           <span className="tile-preview-placeholder">
             Hover over a tile on the board or in your hand to see details

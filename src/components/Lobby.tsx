@@ -68,10 +68,10 @@ export function Lobby({
   const takenColors = lobbyPlayers.map((p) => p.color);
 
   const colorStones: { color: PlayerColor; file: string }[] = [
-    { color: "red", file: "/images/stones/red.png" },
-    { color: "blue", file: "/images/stones/blue.png" },
-    { color: "green", file: "/images/stones/green.png" },
-    { color: "yellow", file: "/images/stones/yellow.png" },
+    { color: "red", file: "/images/stones/red.webp" },
+    { color: "blue", file: "/images/stones/blue.webp" },
+    { color: "green", file: "/images/stones/green.webp" },
+    { color: "yellow", file: "/images/stones/yellow.webp" },
   ];
 
   return (
@@ -79,7 +79,7 @@ export function Lobby({
       {/* Background Video handled safely in App.tsx */}
       <div className="how-to-play-container">
         <button type="button" className="how-to-play-image-btn" onClick={onShowHowToPlay}>
-          <img src="/images/buttons/howtoplay.png" alt="How To Play" />
+          <img src="/images/buttons/howtoplay.webp" alt="How To Play" />
         </button>
       </div>
       <div className="intro-logo">
@@ -93,8 +93,8 @@ export function Lobby({
               <div className="error-message">{localError || errorMessage}</div>
             )}
             
-            <div>
-              <h2 className="lobby-label">Your Name</h2>
+            <div> 
+              <h2 className="undo-request-title shimmer-text" data-text="Your Name">Your Name</h2>
               <input
                 type="text"
                 placeholder="Enter name..."
@@ -105,8 +105,8 @@ export function Lobby({
               />
             </div>
 
-            <div className="input-group">
-              <h2 className="lobby-label">Choose Your Color</h2>
+            <div className="input-group"> 
+              <h2 className="undo-request-title shimmer-text" data-text="Choose Your Color">Choose Your Color</h2>
               <div className="landing-stones">
                 {colorStones.map(({ color, file }) => {
                   const isTaken = takenColors.includes(color);
@@ -129,18 +129,18 @@ export function Lobby({
               disabled={isLoading || !playerName || !selectedColor}
               className="join-game-image-btn"
             >
-              <img src="/images/buttons/joingame.png" alt={isLoading ? "Joining..." : "Join Lobby"} draggable={false} />
+              <img src="/images/buttons/joingame.webp" alt={isLoading ? "Joining..." : "Join Lobby"} draggable={false} />
             </button>
           </>
         ) : (
-          <>
-            <h2>Lobby</h2>
-            
+          <> 
+            <h2 className="undo-request-title shimmer-text" data-text="Lobby">Lobby</h2>
+          
             <ul className="player-list">
               {lobbyPlayers.map((p) => (
                 <li key={p.name} className="player-list-item">
                   <img 
-                    src={`/images/stones/${p.color}.png`} 
+                    src={`/images/stones/${p.color}.webp`} 
                     className="player-stone-icon" 
                     alt={`${p.color} stone`} 
                   />
@@ -196,7 +196,7 @@ export function Lobby({
                   onClick={() => onStartGame(lobbyPlayers)}
                   className="start-game-image-btn"
                 >
-                  <img src="/images/buttons/startgame.png" alt="Start Game" draggable={false} />
+                  <img src="/images/buttons/startgame.webp" alt="Start Game" draggable={false} />
                 </button>
               )
             ) : (

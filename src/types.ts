@@ -35,6 +35,17 @@ export interface FinalLineScores {
   cols: Record<number, Record<string, number>>;
 }
 
+// An in-flight undo request: the requester's whole table votes to
+// approve/deny it. `votes` only contains human opponents (bots can't
+// respond), null = hasn't answered yet, true = approved. A single false
+// never actually appears in state - the backend clears pendingUndo the
+// instant anyone denies.
+export interface PendingUndo {
+  requester: string;
+  requesterColor: PlayerColor;
+  votes: Record<string, boolean | null>;
+}
+
 export interface TravelerConfig {
   src: string;
   direction?: "left-to-right" | "right-to-left";
@@ -71,6 +82,8 @@ export interface GameState {
   scoringSequence: ScoringStep[];
   gameLog: string[];
   pendingDrawTile: Record<string, string | null>;
+  lastMover: string | null;
+  pendingUndo: PendingUndo | null;
   // This field is only present in the initial fetch before the game starts
   lobby_players?: LobbyPlayer[];
   // Ephemeral broadcast-only fields:
@@ -80,3 +93,4 @@ export interface GameState {
   highlightedCells?: CellCoord[] | null;
   lastPlaced?: CellCoord | null;
 }
+

@@ -30,6 +30,7 @@
 }
 .gameover-container h2 {
   font-size: 3em;
+  font-family: var(--font-macondo);
   color: var(--accent-blue);
   font-weight: bold;
 }
@@ -88,6 +89,7 @@
   font-size: 3rem;
   font-weight: bold;
   color: var(--gold);
+  font-family: var(--font-macondo);
   text-align: center;
   text-shadow: 0 0 8px black, 0 0 5px black;
   margin-bottom: 0;
@@ -97,9 +99,10 @@
 .gameover-title {
   font-size: 2.5em;
   color: var(--accent-blue);
+  font-family: var(--font-macondo);
   font-weight: bold;
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
 
 .gameover-table {
@@ -107,6 +110,8 @@
   /* margin-top intentionally omitted — controlled by .gameover-title above it */
   margin: 0 0 -1.5rem 0;
   border-collapse: collapse;
+  font-size: 1.4rem; 
+  font-family: var(--font-macondo);
   background-color: var(--bg-panel-hover);
   border-radius: var(--radius-md);
   overflow: hidden;

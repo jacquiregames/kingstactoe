@@ -66,10 +66,10 @@ export function HowToPlay({ onClose }: { onClose: () => void }) {
               <h2 style={{ textAlign: "center" }}>Castles</h2>
               <p>Each player has Rank 1–4 castles in their color. Higher ranks multiply scores.</p>
               <div className="castle-row">
-                <img src="/images/castles/blue1.png" alt="Castle Rank 1" />
-                <img src="/images/castles/blue2.png" alt="Castle Rank 2" />
-                <img src="/images/castles/blue3.png" alt="Castle Rank 3" />
-                <img src="/images/castles/blue4.png" alt="Castle Rank 4" />
+                <img src="/images/castles/blue1.webp" alt="Castle Rank 1" />
+                <img src="/images/castles/blue2.webp" alt="Castle Rank 2" />
+                <img src="/images/castles/blue3.webp" alt="Castle Rank 3" />
+                <img src="/images/castles/blue4.webp" alt="Castle Rank 4" />
               </div>
               <p>Rank 2–4 castles can only be used once.</p>
               <p>Rank 1 castles are returned at round end.</p>

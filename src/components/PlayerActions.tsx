@@ -16,6 +16,7 @@ interface PlayerActionsProps {
   onSelectHoleTile: () => void;
   onPassTurn: () => void;
   onDrawTile: () => void;
+  onRequestUndo: () => void;
   onSelectCastle: (castle: string) => void;
   isAnimatingScores: boolean;
   showNextRoundButton: boolean;
@@ -38,6 +39,7 @@ export function PlayerActions({
   onSelectHoleTile,
   onPassTurn,
   onDrawTile,
+  onRequestUndo,
   onSelectCastle,
   onTileHover,
   isAnimatingScores,
@@ -53,13 +55,20 @@ export function PlayerActions({
   const isDrawnTileHidden = hiddenPieces.has('drawnTile');
   const isActionLocked = !!drawnTile;
 
+  // Right after this player finishes a turn, they get exactly one turn's
+  // worth of window (the very next player's turn) where they can ask the
+  // table to undo that move. Once anyone else's turn finishes, gameState.lastMover
+  // moves on to them and this window closes on its own.
+  const isUndoWindowOpen = gameState.lastMover === playerName && !isMyTurn;
+  const hasPendingUndoRequest = !!gameState.pendingUndo;
+
   const currentPlayerColorName = gameState.playerColors[gameState.currentPlayer] as PlayerColor;
   const currentPlayerHex = colorMap[currentPlayerColorName] ?? '#aab2bd';
 
   return (
     <div 
-      className={`player-actions ${isAnimatingScores ? "disabled-board" : ""}`}
-      style={{ borderColor: currentPlayerHex }}
+      className={`player-actions ${isAnimatingScores ? "disabled-board" : ""} ${isMyTurn ? 'pulse-border' : ''}`}
+      style={{ border: `3px solid ${currentPlayerHex}`, '--pulse-color': currentPlayerHex } as React.CSSProperties}
     >
       {showNextRoundButton ? (
         <div className="action-box">
@@ -77,7 +86,7 @@ export function PlayerActions({
           </p>
           {isHost && (
             <button type="button" onClick={onStartNextRound} className="start-round-image-btn">
-              <img src={`/images/buttons/startround${gameState.round + 1}.png`} alt={`Start Round ${gameState.round + 1}`} draggable={false} />
+              <img src={`/images/buttons/startround${gameState.round + 1}.webp`} alt={`Start Round ${gameState.round + 1}`} draggable={false} />
             </button>
           )}
         </div>
@@ -85,7 +94,9 @@ export function PlayerActions({
         <>
           <div className="actions-row">
             <div className="action-box">
-              <h3>Your Hole Tile</h3>
+              <h2 className="undo-request-title">Hole Tile
+                <img src="/images/icons/hole.webp" alt="Hole tile icon" className="inline-action-icon" />
+              </h2>
               <div className="hand">
                 {myHoleTile && !isHoleTileHidden && getTileImagePath(myHoleTile) ? (
                   <img
@@ -94,7 +105,7 @@ export function PlayerActions({
                       else delete actionRefs['holeTile'];
                     }}
                     src={getTileImagePath(myHoleTile)}
-                    alt="Your hole tile"
+                    alt="Hole Tile"
                     className={`
                       tile-image 
                       ${selectedPiece?.type === "hole_tile" ? "selected" : ""}
@@ -110,8 +121,8 @@ export function PlayerActions({
               </div>
             </div>
 
-            <div className="action-box">
-              <h3>Turn Action</h3>
+            <div className="action-box"> 
+              <h2 className="undo-request-title">Turn Action</h2>
               <div className="hand">
                 {drawnTile && !isDrawnTileHidden && getTileImagePath(drawnTile) && (
                   <img
@@ -132,6 +143,16 @@ export function PlayerActions({
                 <button type="button" onClick={onPassTurn} className="pass-button">
                   Pass Turn
                 </button>
+              ) : !isActionLocked && isUndoWindowOpen ? (
+                <button
+                  type="button"
+                  onClick={onRequestUndo}
+                  disabled={hasPendingUndoRequest}
+                  className="draw-tile-image-btn undo-image-btn"
+                  title={hasPendingUndoRequest ? "Waiting for the table to respond..." : "Request to undo your last move"}
+                >
+                  <img src="/images/buttons/undo.webp" alt="Request Undo" draggable={false} />
+                </button>
               ) : !isActionLocked && (
                 <button
                   type="button"
@@ -139,14 +160,14 @@ export function PlayerActions({
                   disabled={!isMyTurn || !!selectedPiece || gameState.tilesInBag === 0}
                   className="draw-tile-image-btn"
                 >
-                  <img src="/images/buttons/drawandplacetile.png" alt="Draw & Place Tile" draggable={false} />
+                  <img src="/images/buttons/drawandplacetile.webp" alt="Draw & Place Tile" draggable={false} />
                 </button>
               )}
             </div>
           </div>
 
-          <div className="action-box">
-            <h3>Your Castles</h3>
+          <div className="action-box"> 
+            <h2 className="undo-request-title">Castles</h2>
             <div className="castle-inventory">
               {myCastles.length > 0 ? (
                 myCastles.map((castle) => {
@@ -182,3 +203,4 @@ export function PlayerActions({
     </div>
   );
 }
+

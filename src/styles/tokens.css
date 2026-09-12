@@ -34,7 +34,8 @@
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   --font-mono: 'Courier New', Courier, monospace;
   --font-display: 'Georgia', 'Times New Roman', serif;
-
+  --font-macondo: 'Macondo', var(--font-display);
+  
   /* --- Spacing scale --- */
   --space-xs: 4px;
   --space-sm: 8px;

@@ -4,7 +4,7 @@ import type { TravelerConfig } from './types';
 // Base set of flyers, will be used in all sections
 const baseFlyers: TravelerConfig[] = [
   {
-    src: "/images/fly/dragon1.png",
+    src: "/images/fly/dragon1.webp",
     direction: "left-to-right",
     duration: 12000,
     verticalPercent: 50,
@@ -14,7 +14,7 @@ const baseFlyers: TravelerConfig[] = [
     height: 'auto', 
   },
   {
-    src: "/images/fly/dragon2.png",
+    src: "/images/fly/dragon2.webp",
     direction: "right-to-left",
     duration: 20000,
     verticalPercent: 20,
@@ -32,7 +32,7 @@ const patrolDuration = 28000;
 const totalPatrolCycle = patrolDuration * 2;
 const lobbyAndRound1Bottom: TravelerConfig[] = [
   { 
-    src: '/images/fly/walkleft.png',
+    src: '/images/fly/walkleft.webp',
     animationName: 'patrolRightToLeft',
     duration: totalPatrolCycle,
     verticalPercent: 84,
@@ -42,7 +42,7 @@ const lobbyAndRound1Bottom: TravelerConfig[] = [
     height: 150,
   },
   {
-    src: '/images/fly/walkright.png',
+    src: '/images/fly/walkright.webp',
     animationName: 'patrolLeftToRight',
     duration: totalPatrolCycle,
     verticalPercent: 84,
@@ -58,7 +58,7 @@ const totalRound2Cycle = 36000;
 const round2Bottom: TravelerConfig[] = [
   // --- PART 1: HUMANS RUNNING (0s - 18s) ---
   { 
-    src: '/images/fly/run_1.png', 
+    src: '/images/fly/run_1.webp', 
     animationName: 'phase1LeftToRight', // Runs immediately
     duration: totalRound2Cycle,
     startDelay: 0,
@@ -66,7 +66,7 @@ const round2Bottom: TravelerConfig[] = [
     loop: true, width: 150, height: 150,
   },
   { 
-    src: '/images/fly/run_right.png',
+    src: '/images/fly/run_right.webp',
     animationName: 'phase1LeftToRight', // Runs immediately
     duration: totalRound2Cycle,
     startDelay: 1400, // Slight stagger within Phase 1
@@ -76,7 +76,7 @@ const round2Bottom: TravelerConfig[] = [
   
   // --- PART 2: DINOS CHASING (18s - 36s) ---
   {  
-    src: '/images/fly/run_left.png', 
+    src: '/images/fly/run_left.webp', 
     animationName: 'phase2RightToLeft', // Waits 18s, then runs
     duration: totalRound2Cycle,
     startDelay: 0, // No extra delay needed, the animation handles the wait
@@ -84,7 +84,7 @@ const round2Bottom: TravelerConfig[] = [
     loop: true, width: 250, height: 150,
   },
   {
-    src: '/images/fly/trex_left.png',
+    src: '/images/fly/trex_left.webp',
     animationName: 'phase2RightToLeft', // Waits 18s, then runs
     duration: totalRound2Cycle,
     startDelay: 2000, // Stagger relative to the start of the 36s cycle
@@ -100,7 +100,7 @@ const round3Bottom: TravelerConfig[] = [
   // --- PART 1: T-REX CHASE (0s - 12s) ---
   // Uses 'phase1LeftToRight': Runs immediately
   {  
-    src: '/images/fly/trex_right.png',
+    src: '/images/fly/trex_right.webp',
     animationName: 'phase1LeftToRight',
     duration: totalRound3Cycle, // Must be full cycle (24000)
     startDelay: 0,
@@ -108,7 +108,7 @@ const round3Bottom: TravelerConfig[] = [
     loop: true, width: 466, height: 150,
   },
   { 
-    src: '/images/fly/runright.png',
+    src: '/images/fly/runright.webp',
     animationName: 'phase1LeftToRight',
     duration: totalRound3Cycle, // Must be full cycle
     startDelay: 1500, // Human running ahead/behind
@@ -119,7 +119,7 @@ const round3Bottom: TravelerConfig[] = [
   // --- PART 2: RETREAT (12s - 24s) ---
   // Uses 'phase2RightToLeft': Waits 12s, then runs
   {
-    src: '/images/fly/runleft.png', 
+    src: '/images/fly/runleft.webp', 
     animationName: 'phase2RightToLeft',
     duration: totalRound3Cycle, // Must be full cycle
     startDelay: 0, // No extra delay needed, animation waits 50%
@@ -127,7 +127,7 @@ const round3Bottom: TravelerConfig[] = [
     loop: true, width: 246, height: 150,
   },
   {
-    src: '/images/fly/shootleft.png', 
+    src: '/images/fly/shootleft.webp', 
     animationName: 'phase2RightToLeft',
     duration: totalRound3Cycle, // Must be full cycle
     startDelay: 1050, // Stagger relative to start of Phase 2
@@ -140,7 +140,7 @@ const round3Bottom: TravelerConfig[] = [
 // --- Game Summary ---
 const summaryBottom: TravelerConfig[] = [
   { 
-    src: '/images/fly/run_2.gif', 
+    src: '/images/fly/run_2.webp', 
     startDelay: 0,
     direction: 'left-to-right',
     duration: 13000,

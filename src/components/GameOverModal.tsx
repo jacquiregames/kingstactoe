@@ -54,9 +54,9 @@ export function GameOverModal({ gameState, onReset }: GameOverModalProps) {
       {showConfetti && <Confetti recycle={false} numberOfPieces={400} />}
 
       <div className="podium-container">
-        <img src="/images/podium.png" alt="Winner's Podium" className="podium-image" />
+        <img src="/images/podium.webp" alt="Winner's Podium" className="podium-image" />
         <div className="crown-container">
-          <img src="/images/stones/crown.png" alt="Winner's Crown" className="crown-image" />
+          <img src="/images/stones/crown.webp" alt="Winner's Crown" className="crown-image" />
         </div>
         <div className="winner-banner">
           {winnerName}

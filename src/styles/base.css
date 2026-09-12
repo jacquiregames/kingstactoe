@@ -6,6 +6,14 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&display=swap');
 
+@font-face {
+  font-family: 'Macondo';
+  src: url('/macondo.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* --- Global Resets --- */
 *,
 *::before,
@@ -26,7 +34,7 @@ body,
 
 /* --- Base Styles --- */
 body {
-  background-image: url('/images/background/background.png');
+  background-image: url('/images/background/background.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

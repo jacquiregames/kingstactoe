@@ -34,6 +34,27 @@
   border-radius: var(--radius-md);
   padding: var(--space-sm);
 }
+.action-box h3 {
+  font-family: var(--font-macondo);
+  font-size: 2.2rem;
+  margin-top: 5px;
+  margin-bottom: var(--space-md);
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.inline-action-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  border: 1px solid white;
+  margin-left: 15px;
+}
+
 .player-actions .hand {
   align-items: center;
   display: flex;

@@ -54,9 +54,14 @@
 }
 
 @keyframes borderPulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+  0%, 100% { 
+    box-shadow: 0 0 4px 1px var(--pulse-color, rgba(255, 255, 255, 0.4)),
+                inset 0 0 4px 1px var(--pulse-color, rgba(255, 255, 255, 0.4)); 
+  }
+  50% { 
+    box-shadow: 0 0 18px 4px var(--pulse-color, rgba(255, 255, 255, 0.8)),
+                inset 0 0 12px 2px var(--pulse-color, rgba(255, 255, 255, 0.8)); 
+  }
 }
 
 @keyframes pulseGlow {
@@ -64,6 +69,7 @@
   70% { box-shadow: 0 0 0 15px rgba(255, 215, 0, 0); }
   100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
 }
+ 
 
 /* Added: ".score-highlight" referenced this keyframe but it was never
    defined anywhere, so the animation silently did nothing. This mirrors
@@ -113,6 +119,11 @@
 @keyframes shimmer {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
+}
+
+@keyframes floatGem {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.05); }
 }
 
 /* --- Tile / piece placement --- */

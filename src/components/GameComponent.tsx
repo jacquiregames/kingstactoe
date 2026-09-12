@@ -5,6 +5,7 @@ import { GameOverModal } from "./GameOverModal";
 import { GameLog } from "./GameLog";
 import { GameBoard } from "./GameBoard";
 import { PlayerActions } from "./PlayerActions";
+import { UndoRequestModal } from "./UndoRequestModal";
 import { useGameActions } from "../hooks/useGameActions";
 import { GameHeader } from "./GameHeader";
 import { FlyingTile } from "./FlyingTile";
@@ -93,14 +94,14 @@ export function GameComponent({
   // Background change based on turn
   useEffect(() => {
     if (isMyTurn && !gameState.isGameOver) {
-      document.body.style.backgroundImage = "url('/images/background/yourturn.png')";
+      document.body.style.backgroundImage = "url('/images/background/yourturn.webp')";
     } else {
-      document.body.style.backgroundImage = "url('/images/background/background.png')";
+      document.body.style.backgroundImage = "url('/images/background/background.webp')";
     }
 
     // Cleanup to default background when leaving game
     return () => {
-      document.body.style.backgroundImage = "url('/images/background/background.png')";
+      document.body.style.backgroundImage = "url('/images/background/background.webp')";
     };
   }, [isMyTurn, gameState.isGameOver]);
  
@@ -124,6 +125,16 @@ export function GameComponent({
 
   const handleStartNextRoundClick = async () => {
     const newState = await gameActions.handleStartNextRound();
+    if (newState) onGameStateUpdate(newState);
+  };
+
+  const handleRequestUndoClick = async () => {
+    const newState = await gameActions.handleRequestUndo();
+    if (newState) onGameStateUpdate(newState);
+  };
+
+  const handleRespondUndo = async (approve: boolean) => {
+    const newState = await gameActions.handleRespondUndo(approve);
     if (newState) onGameStateUpdate(newState);
   };
 
@@ -265,27 +276,38 @@ export function GameComponent({
         {gameState.isGameOver ? (
           <GameOverModal gameState={gameState} onReset={onReset} />
         ) : (
-          <PlayerActions
-            gameState={gameState}
-            playerName={playerName}
-            isMyTurn={isMyTurn}
-            myHoleTile={myHoleTile}
-            myCastles={myCastles}
-            selectedPiece={selectedPiece}
-            drawnTile={drawnTile}
-            isDrawing={isDrawing}
-            showPassButton={showPassButton}
-            onSelectHoleTile={handleSelectHoleTile}
-            onPassTurn={gameActions.handlePassTurn}
-            onDrawTile={gameActions.handleDrawTile}
-            onSelectCastle={handleSelectCastle}
-            isAnimatingScores={isAnimatingScores}
-            showNextRoundButton={showEndRoundUI && !gameState.isGameOver}
-            onStartNextRound={handleStartNextRoundClick}
-            onTileHover={setHoveredTile}
-            actionRefs={actionRefs}
-            hiddenPieces={hiddenPieces}
-          />
+          <div style={{ position: 'relative', display: 'flex', flexShrink: 0 }}>
+            <PlayerActions
+              gameState={gameState}
+              playerName={playerName}
+              isMyTurn={isMyTurn}
+              myHoleTile={myHoleTile}
+              myCastles={myCastles}
+              selectedPiece={selectedPiece}
+              drawnTile={drawnTile}
+              isDrawing={isDrawing}
+              showPassButton={showPassButton}
+              onSelectHoleTile={handleSelectHoleTile}
+              onPassTurn={gameActions.handlePassTurn}
+              onDrawTile={gameActions.handleDrawTile}
+              onRequestUndo={handleRequestUndoClick}
+              onSelectCastle={handleSelectCastle}
+              isAnimatingScores={isAnimatingScores}
+              showNextRoundButton={showEndRoundUI && !gameState.isGameOver}
+              onStartNextRound={handleStartNextRoundClick}
+              onTileHover={setHoveredTile}
+              actionRefs={actionRefs}
+              hiddenPieces={hiddenPieces}
+            />
+            {gameState.pendingUndo && gameState.pendingUndo.votes[playerName] === null && (
+              <UndoRequestModal
+                requesterName={gameState.pendingUndo.requester}
+                requesterColor={gameState.pendingUndo.requesterColor}
+                onApprove={() => handleRespondUndo(true)}
+                onDeny={() => handleRespondUndo(false)}
+              />
+            )}
+          </div>
         )}
       </main>
 
@@ -324,3 +346,4 @@ export function GameComponent({
     </div>
   );
 }
+

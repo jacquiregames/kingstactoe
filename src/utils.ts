@@ -16,7 +16,7 @@ export function getTileImagePath(
     const style = 'castles';
     
     // Construct path with the determined style folder
-    return `/images/${style}/${color}${rank}.png`;
+    return `/images/${style}/${color}${rank}.webp`;
   }
 
   // --- Special tiles ---

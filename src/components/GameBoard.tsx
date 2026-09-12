@@ -51,8 +51,12 @@ export function GameBoard({
   const [affectedCells, setAffectedCells] = useState<CellCoord[]>([]);
   const rowScoreRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const colScoreRefs = useRef<Record<number, HTMLDivElement | null>>({});
-  const overlayRef = useRef<HTMLDivElement | null>(null);
-  const overlayImgRef = useRef<HTMLImageElement | null>(null);
+  
+  // Independent refs so concurrent animations never clash
+  const roundOverlayRef = useRef<HTMLDivElement | null>(null);
+  const roundImgRef = useRef<HTMLImageElement | null>(null);
+  const turnOverlayRef = useRef<HTMLDivElement | null>(null);
+  const turnImgRef = useRef<HTMLImageElement | null>(null);
   const prevPlayerRef = useRef<string | null>(null);
 
   const rowScores = useMemo(() => {
@@ -92,54 +96,76 @@ export function GameBoard({
     onPositionsReady: onLineScorePositionsReady,
   });
 
-  const playRoundTransition = (
+  const playTransition = (
     imagePath: string,
     staticHoldMs: number,
     transitionMs: number,
-    targetSelector: string
+    targetSelector: string,
+    overlay: HTMLDivElement | null,
+    img: HTMLImageElement | null
   ) => {
-    const overlay = overlayRef.current;
-    const img = overlayImgRef.current;
     const target = document.querySelector(targetSelector) as HTMLElement;
-    const gameContainer = document.querySelector(".board-and-scores-container") as HTMLElement;
 
-    if (!overlay || !img || !target || !gameContainer) {
+    if (!overlay || !img || !target) {
         console.warn("Transition targets not found in DOM");
         return;
     }
 
-    img.style.transition = `all ${transitionMs / 1000}s ease-in-out`;
+    // Clear any pending timeouts to prevent ghost flashes if called repeatedly
+    if ((overlay as any)._timeout1) clearTimeout((overlay as any)._timeout1);
+    if ((overlay as any)._timeout2) clearTimeout((overlay as any)._timeout2);
+
+    // 1. Temporarily disable transitions to snap instantly to the starting state
+    img.style.transition = 'none';
     overlay.classList.remove("hidden");
+    img.style.opacity = '1';
     img.src = imagePath;
 
+    // Start centered and full size
     img.style.position = "absolute";
     img.style.top = "50%";
     img.style.left = "50%";
-    img.style.transform = "translate(-50%, -50%)";
     img.style.width = "1000px";
     img.style.height = "400px";
+    img.style.transform = "translate(-50%, -50%) scale(1)";
 
-    setTimeout(() => {
+    // Force a browser reflow so it registers the non-animated start state
+    void img.offsetWidth;
+
+    (overlay as any)._timeout1 = setTimeout(() => {
+      // 2. Calculate center points using universal viewport coordinates
       const targetRect = target.getBoundingClientRect();
-      const gameRect = gameContainer.getBoundingClientRect();
-      const targetX = targetRect.left - gameRect.left;
-      const targetY = targetRect.top - gameRect.top;
+      const overlayRect = overlay.getBoundingClientRect();
 
-      img.style.transform = "translate(0, 0)";
-      img.style.top = `${targetY}px`;
-      img.style.left = `${targetX}px`;
-      img.style.width = "250px";
-      img.style.height = "100px";
+      const targetCenterX = targetRect.left + targetRect.width / 2;
+      const targetCenterY = targetRect.top + targetRect.height / 2;
+      
+      const overlayCenterX = overlayRect.left + overlayRect.width / 2;
+      const overlayCenterY = overlayRect.top + overlayRect.height / 2;
+
+      const deltaX = targetCenterX - overlayCenterX;
+      const deltaY = targetCenterY - overlayCenterY;
+
+      // 3. Re-enable transitions: transform animates the whole time, opacity fades out at the very end
+      const fadeOutDuration = 0.3;
+      const fadeOutDelay = Math.max(0, (transitionMs / 1000) - fadeOutDuration);
+      
+      img.style.transition = `transform ${transitionMs / 1000}s ease-in-out, opacity ${fadeOutDuration}s ease-in-out ${fadeOutDelay}s`;
+      
+      // 4. Translate by the exact pixel delta, scale down, and drop opacity so it vanishes
+      img.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) scale(0.25)`;
+      img.style.opacity = '0';
     }, staticHoldMs);
 
-    setTimeout(() => {
+    // Hide the overlay completely after the animation fully finishes
+    (overlay as any)._timeout2 = setTimeout(() => {
       overlay.classList.add("hidden");
     }, staticHoldMs + transitionMs + 100);
   };
 
   useEffect(() => {
-    const roundImage = `/images/rounds/round${gameState.round}.png`;
-    playRoundTransition(roundImage, 1500, 1100, ".round-info-block");
+    const roundImage = `/images/rounds/round${gameState.round}.webp`;
+    playTransition(roundImage, 1500, 1100, ".round-info-block", roundOverlayRef.current, roundImgRef.current);
   }, [gameState.round]);
 
   useEffect(() => {
@@ -147,7 +173,7 @@ export function GameBoard({
       prevPlayerRef.current !== gameState.currentPlayer &&
       gameState.currentPlayer === playerName
     ) {
-      playRoundTransition("/images/rounds/yourturn.png", 1000, 1000, ".turn-indicator");
+      playTransition("/images/rounds/yourturn.webp", 1000, 1000, ".turn-indicator", turnOverlayRef.current, turnImgRef.current);
     }
     prevPlayerRef.current = gameState.currentPlayer;
   }, [gameState.currentPlayer, playerName]);
@@ -157,18 +183,18 @@ export function GameBoard({
 
   return (
     <>
-      <div id="round-transition-overlay" ref={overlayRef} className="hidden">
-        <img 
-          id="round-transition-image" 
-          ref={overlayImgRef} 
-          alt="Round Banner" 
-          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" 
-        />
+      {/* Separated overlays so concurrent Round and Turn animations don't interrupt each other */}
+      <div ref={roundOverlayRef} className="hidden" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 9999 }}>
+        <img ref={roundImgRef} alt="Round Banner" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
       </div>
 
+      <div ref={turnOverlayRef} className="hidden" style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', pointerEvents: 'none', zIndex: 9999 }}>
+        <img ref={turnImgRef} alt="Turn Banner" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
+      </div>
+      
       <div 
-        className={`board-and-scores-container ${isBoardDisabled ? "disabled-board" : ""} ${boardShake ? "shake" : ""}`}
-        style={{ borderColor: currentPlayerHex }}
+        className={`board-and-scores-container ${isBoardDisabled ? "disabled-board" : ""} ${boardShake ? "shake" : ""} ${isMyTurn ? 'pulse-border' : ''}`}
+        style={{ border: `3px solid ${currentPlayerHex}`, '--pulse-color': currentPlayerHex } as React.CSSProperties}
       >
         <div className="game-board">
           {gameState.board.map((row, r_idx) =>

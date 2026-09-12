@@ -47,6 +47,19 @@ export function useGameActions(
     }, 'Start Next Round Failed');
   }, [playerName, onApiCall]);
 
+  const handleRequestUndo = useCallback(async () => {
+    return await onApiCall('/request_undo', {
+      player_name: playerName
+    }, 'Undo Request Failed');
+  }, [playerName, onApiCall]);
+
+  const handleRespondUndo = useCallback(async (approve: boolean) => {
+    return await onApiCall('/respond_undo', {
+      player_name: playerName,
+      approve
+    }, 'Undo Response Failed');
+  }, [playerName, onApiCall]);
+
   // --- FIX: Memoize the entire returned object ---
   // This ensures the `gameActions` object has a stable reference
   // across re-renders, preventing the useEffect loop.
@@ -56,13 +69,18 @@ export function useGameActions(
     handlePlaceCastle,
     handlePlaceHoleTile,
     handlePassTurn,
-    handleStartNextRound
+    handleStartNextRound,
+    handleRequestUndo,
+    handleRespondUndo
   }), [
     handleDrawTile,
     handlePlaceTile,
     handlePlaceCastle,
     handlePlaceHoleTile,
     handlePassTurn,
-    handleStartNextRound
+    handleStartNextRound,
+    handleRequestUndo,
+    handleRespondUndo
   ]);
 }
+

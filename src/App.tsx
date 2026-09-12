@@ -189,7 +189,7 @@ export default function App() {
 
   useEffect(() => {
     if (gameState?.isGameOver) {
-      const run2Config = travelerConfigs.summary.find(t => t.src === '/images/fly/run_2.gif');
+      const run2Config = travelerConfigs.summary.find(t => t.src === '/images/fly/run_2.webp');
       if (run2Config && run2Config.duration) {
         const appearTime = run2Config.duration * 0.8; 
         const timer = setTimeout(() => setShowEndImage(true), appearTime);
@@ -271,12 +271,12 @@ export default function App() {
 
       <video
         ref={lobbyVideoRef}
-        src="/images/background/background.mp4"
+        src="/videos/background/background.mp4"
         autoPlay
         loop
         muted
         playsInline
-        poster="/images/background/background.png"
+        poster="/videos/background/background.webp"
         onError={() => setLobbyVideoError(true)}
         style={{
           display: (!gameStarted && !videoTransition && !lobbyVideoError) ? 'block' : 'none',
@@ -297,7 +297,7 @@ export default function App() {
         muted
         playsInline
         onEnded={() => {
-          if (transitionVideoSrc !== '/images/background/start.mp4') {
+          if (transitionVideoSrc !== '/videos/background/start.mp4') {
             handleTransitionEnd();
           }
         }}
@@ -316,7 +316,7 @@ export default function App() {
 
       {!videoTransition && <Travelers travelers={currentTravelers} />}
       {!videoTransition && showEndImage && (
-        <img src="/images/end.png" alt="End" className="end-image" />
+        <img src="/images/end.webp" alt="End" className="end-image" />
       )}      
 
       {!videoTransition && showHowToPlay && (
