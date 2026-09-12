@@ -1,0 +1,57 @@
+name: Build Windows Executable
+
+on:
+  push:
+    branches: [ "main" ] # Triggers automatically on push to main
+  workflow_dispatch:     # Allows you to trigger it manually from the Actions tab
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Build React Frontend
+        run: |
+          pnpm install
+          pnpm run build
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python Dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build Executable with PyInstaller
+        run: |
+          cd backend
+          # --windowed hides the console window
+          # --add-data bundles the React dist folder inside the package
+          pyinstaller --name "KingsTacToe" --windowed --noconfirm --add-data "..\dist;dist" main.py
+
+      - name: Zip the Application
+        # PyInstaller outputs to backend/dist/KingsTacToe. We zip it so it's easy to download.
+        run: |
+          cd backend/dist
+          Compress-Archive -Path KingsTacToe -DestinationPath KingsTacToe-Windows.zip
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: KingsTacToe-Windows
+          path: backend/dist/KingsTacToe-Windows.zip
