@@ -1,0 +1,19 @@
+{"name": "POO", "score": 30, "players": 2}
+{"name": "ASS", "score": 20, "players": 2}
+{"name": "AAA", "score": 10, "players": 2}
+{"name": "AAA", "score": 20, "players": 3}
+{"name": "POO", "score": 15, "players": 3}
+{"name": "ASS", "score": 10, "players": 3}
+{"name": "ASS", "score": 20, "players": 4}
+{"name": "POO", "score": 15, "players": 4}
+{"name": "AAA", "score": 10, "players": 4}
+{"name": "djax", "score": 388, "players": 2}
+{"name": "ljax", "score": 433, "players": 2}
+
+{"name": "pp", "score": 187, "players": 4}
+{"name": "popopo", "score": 262, "players": 3}
+{"name": "djax", "score": 266, "players": 3}
+{"name": "Tha Rippla", "score": 235, "players": 3}
+{"name": "DWookie", "score": 198, "players": 3}
+{"name": "djax", "score": 284, "players": 3}
+{"name": "pppp", "score": 277, "players": 3}
