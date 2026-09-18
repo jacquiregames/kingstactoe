@@ -1,8 +1,6 @@
 name: Build Windows Executable
 
 on:
-  push:
-    branches: [ "main" ] # Triggers automatically on push to main
   workflow_dispatch:     # Allows you to trigger it manually from the Actions tab
 
 jobs:
